@@ -199,7 +199,7 @@ function render(){
   window.scrollTo({top:0});
 }
 // Where final scores are sent. Leave empty to record nothing. Works with a Google Apps Script web app URL or any endpoint that accepts a JSON POST.
-const SUBMIT_URL="";
+const SUBMIT_URL="https://script.google.com/macros/s/AKfycbwOZVY1TOBcP_XyodjSSSPGBikpfOY95otepY0QrS51C0qBRSzLE8UjZ-49oEhRf7Hc3Q/exec";
 let fname="";
 $("fname").oninput=()=>{ fname=$("fname").value.trim(); $("start").disabled=!fname; };
 $("start").onclick=()=>{ if(!fname) return; $("intro").hidden=true; $("survey").hidden=false; buildScale(); render(); };
