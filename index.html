@@ -80,6 +80,7 @@ pre{font-size:.75rem;overflow-x:auto;background:var(--bg);padding:12px;border-ra
     <div class="rail" id="rail"></div>
     <div class="card">
       <div class="pole" id="stmt"></div>
+      <div><button class="nop" id="explbtn">What does this mean?</button><p class="muted" id="expl" hidden style="margin-top:8px"></p></div>
       <div class="scale" id="scale"></div>
       <div class="row">
         <button class="nop" id="nop">No opinion</button>
@@ -92,6 +93,7 @@ pre{font-size:.75rem;overflow-x:auto;background:var(--bg);padding:12px;border-ra
     <div class="card">
       <div class="eyebrow">Your results</div>
       <h1 id="rname">Position by domain</h1>
+      <p class="muted" id="lowconf" hidden><strong>Low confidence:</strong> you answered fewer than 40 of 60 items, so this score rests on a small sample of your views.</p>
       <div id="gauge"></div>
       <p class="muted">Your overall position is the average of all 60 items. The shaded band around it shows how consistent your answers were across issues (one standard deviation): a narrow band means your views line up, a wide band means they pull in different directions even though the average lands where it does. "No opinion" items are left out.</p>
       <div class="eyebrow">By domain</div>
@@ -112,6 +114,7 @@ pre{font-size:.75rem;overflow-x:auto;background:var(--bg);padding:12px;border-ra
   </div>
 </div>
 
+<script src="explanations.js"></script>
 <script>
 const ITEMS=[
 ["Immigration","Undocumented immigrants who have lived here illegally should be deported.","Undocumented immigrants who have lived here for years should be offered a path to citizenship."],
@@ -176,7 +179,7 @@ const ITEMS=[
 ["Education","Public universities should face fewer federal requirements.","Public universities should be held to federal standards on access and civil rights."]
 ];
 const N=ITEMS.length, $=id=>document.getElementById(id);
-let i=0, resp=Array(N).fill(undefined);
+let i=0, resp=Array(N).fill(undefined), explOpened={};
 // Half the items show the R-pole statement, half the L-pole, balanced within each domain and shuffled, to limit acquiescence bias.
 const keyR=(()=>{const out=Array(N); const doms=[...new Set(ITEMS.map(x=>x[0]))]; doms.forEach(d=>{const idx=ITEMS.map((x,k)=>x[0]===d?k:-1).filter(k=>k>=0); const flags=idx.map((_,j)=>j%2===0); for(let a=flags.length-1;a>0;a--){const b=Math.floor(Math.random()*(a+1));[flags[a],flags[b]]=[flags[b],flags[a]];} idx.forEach((k,j)=>out[k]=flags[j]);}); return out;})();
 const LABELS=["Strongly disagree","Disagree","Neutral","Agree","Strongly agree"];
@@ -189,6 +192,7 @@ function set(k){ resp[i]=toScore(k); render(); }
 function render(){
   const [d,r,l]=ITEMS[i];
   $("stmt").textContent=keyR[i]?r:l;
+  $("expl").textContent=EXPL[i]||""; $("expl").hidden=true; $("explbtn").hidden=!EXPL[i];
   $("domlbl").textContent=d; $("count").textContent=(i+1)+" / "+N;
   const v=resp[i];
   for(let k=0;k<5;k++) $("s"+k).classList.toggle("on", typeof v==="number" && fromScore(v)===k);
@@ -203,6 +207,7 @@ const SUBMIT_URL="https://script.google.com/macros/s/AKfycbwOZVY1TOBcP_XyodjSSSP
 let fname="";
 $("fname").oninput=()=>{ fname=$("fname").value.trim(); $("start").disabled=!fname; };
 $("start").onclick=()=>{ if(!fname) return; $("intro").hidden=true; $("survey").hidden=false; buildScale(); render(); };
+$("explbtn").onclick=()=>{ $("expl").hidden=!$("expl").hidden; explOpened[i]=true; };
 $("nop").onclick=()=>{ resp[i]=null; render(); };
 $("back").onclick=()=>{ if(i>0){i--; render();} };
 $("next").onclick=()=>{ if(i<N-1){i++; render();} else finish(); };
@@ -232,6 +237,8 @@ function gauge(o,sd){
 async function finish(){
   $("survey").hidden=true; $("results").hidden=false;
   $("rname").textContent=fname+", here is your profile";
+  const nAns=resp.filter(v=>typeof v==="number").length;
+  $("lowconf").hidden = nAns>=40;
   const doms=[...new Set(ITEMS.map(x=>x[0]))];
   const domScores={};
   $("doms").innerHTML=doms.map(d=>{
@@ -242,7 +249,7 @@ async function finish(){
   }).join("");
   const o=mean(resp); const sd=stdev(resp);
   $("gauge").innerHTML=gauge(o,sd);
-  const record={respondent_id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())), overall:o===null?null:+o.toFixed(3), position:o===null?null:label(o), spread_sd:+sd.toFixed(3), domains:domScores, answered:resp.filter(v=>typeof v==="number").length, submitted_at:new Date().toISOString()};
+  const record={respondent_id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())), overall:o===null?null:+o.toFixed(3), position:o===null?null:label(o), spread_sd:+sd.toFixed(3), domains:domScores, answered:resp.filter(v=>typeof v==="number").length, explanations_opened:Object.keys(explOpened).length, submitted_at:new Date().toISOString()};
   if(SUBMIT_URL){
     try{
       await fetch(SUBMIT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(record)});
