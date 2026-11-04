@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Jay’s Political Left - Right - Center</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+</head>
+<body>
+<style>
+/* Layout: one item per screen, bipolar statements on a 7-point scale, domain progress rail, researcher results at the end */
+:root{
+  --bg:#f7f6f2; --panel:#ffffff; --fg:#1f2320; --muted:#6a6f6b; --line:#dcdcd5;
+  --accent:#2f5d50; --accent-soft:#e3ede8; --scale:#c9d6cf;
+  --display:"Source Serif 4",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#171a18; --panel:#20241f; --fg:#eceee9; --muted:#9ea39f; --line:#343a35;
+  --accent:#8fc3ad; --accent-soft:#263a33; --scale:#3a4a43; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#171a18; --panel:#20241f; --fg:#eceee9; --muted:#9ea39f; --line:#343a35;
+  --accent:#8fc3ad; --accent-soft:#263a33; --scale:#3a4a43; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:20px}
+h1{font-family:var(--display);font-weight:600;font-size:1.6rem;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.25rem;margin:0}
+p{margin:0;max-width:65ch}
+.muted{color:var(--muted);font-size:.9rem}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.rail{display:flex;gap:4px}
+.rail i{flex:1;height:5px;background:var(--line);border-radius:3px}
+.rail i.done{background:var(--accent)}
+.rail i.cur{background:var(--accent);opacity:.5}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px;display:grid;gap:18px}
+.poles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pole{font-family:var(--display);font-size:1.08rem;line-height:1.4;min-width:0}
+.pole.b{text-align:right}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pole{font-size:1.25rem}
+.scale button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:12px 0;cursor:pointer;color:var(--fg);font:inherit;font-size:.8rem}
+.scale button:hover{border-color:var(--accent)}
+.scale button.on{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.scale button:focus-visible,.btn:focus-visible,.nop:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.scalelbl{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:500;padding:10px 18px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.btn:disabled{opacity:.4;cursor:default}
+.nop{font:inherit;font-size:.85rem;background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+.nop.on{color:var(--accent);font-weight:600}
+.dom{display:grid;gap:6px}
+.bar{position:relative;height:10px;background:var(--scale);border-radius:5px}
+.bar::after{content:"";position:absolute;left:50%;top:-3px;width:1px;height:16px;background:var(--muted)}
+.bar b{position:absolute;top:-4px;width:18px;height:18px;border-radius:50%;background:var(--accent);transform:translateX(-50%)}
+.domhead{display:flex;justify-content:space-between;font-size:.9rem}
+.num{font-variant-numeric:tabular-nums}
+pre{font-size:.75rem;overflow-x:auto;background:var(--bg);padding:12px;border-radius:8px;max-height:200px}
+@media (max-width:480px){.poles{grid-template-columns:1fr}.pole.b{text-align:left;border-top:1px solid var(--line);padding-top:12px}.scale button{padding:10px 0;font-size:.7rem}}
+@media (prefers-reduced-motion:no-preference){.bar b{transition:left .4s}}
+</style>
+
+<div class="wrap">
+  <div id="intro">
+    <div class="card">
+      <div class="eyebrow">Pilot instrument · 60 items · about 10 minutes</div>
+      <h1>Jay’s Political Left - Right - Center</h1>
+      <p>You will see 60 statements, one at a time. Say how much you agree with each. There are no right answers, and no party labels. Choose <em>No opinion</em> if you have none.</p>
+      <p class="muted">Your item-by-item answers stay on your device. Only your first name and final scores are recorded.</p>
+      <label class="eyebrow" for="fname">First name</label>
+      <input id="fname" type="text" autocomplete="given-name" placeholder="e.g. Maria" style="font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);max-width:280px">
+      <div class="row"><button class="btn primary" id="start" disabled>Begin</button><span class="muted" id="authmsg"></span></div>
+    </div>
+  </div>
+
+  <div id="survey" hidden>
+    <div class="row"><span class="eyebrow" id="domlbl"></span><span class="muted num" id="count"></span></div>
+    <div class="rail" id="rail"></div>
+    <div class="card">
+      <div class="pole" id="stmt"></div>
+      <div class="scale" id="scale"></div>
+      <div class="row">
+        <button class="nop" id="nop">No opinion</button>
+        <div style="display:flex;gap:8px"><button class="btn" id="back">Back</button><button class="btn primary" id="next" disabled>Next</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="results" hidden>
+    <div class="card">
+      <div class="eyebrow">Your results</div>
+      <h1 id="rname">Position by domain</h1>
+      <div id="gauge"></div>
+      <p class="muted">Your overall position is the average of all 60 items. The shaded band around it shows how consistent your answers were across issues (one standard deviation): a narrow band means your views line up, a wide band means they pull in different directions even though the average lands where it does. "No opinion" items are left out.</p>
+      <div class="eyebrow">By domain</div>
+      <div id="doms" style="display:grid;gap:18px"></div>
+      <div class="row"><button class="btn" id="copy">Copy my item answers as CSV</button><button class="btn" id="restart">Start over</button><span class="muted" id="copymsg"></span></div>
+      <p class="muted" id="savemsg"></p>
+      <pre id="csv" hidden></pre>
+    </div>
+  </div>
+
+  <div class="card" id="essay">
+    <div class="eyebrow">Why this instrument</div>
+    <h2>Measuring positions without party labels</h2>
+    <p>Most political surveys ask people which side they are on. This one asks where they stand, one issue at a time, with no statement marked as the party line. The respondent never sees a label, so there is nothing to perform.</p>
+    <p>The design borrows from psychometrics rather than polling. Each domain is a short scale, half the statements in it lean one way and half the other, and the order is shuffled so that a habit of agreeing cannot drive the score. The result is a profile across domains rather than a single sorting into two bins.</p>
+    <p>Only final scores and a first name are kept. Item-level answers belong to the respondent and never leave their device unless they choose to copy them.</p>
+    <p class="muted">Draft placeholder. Replace with the full rationale.</p>
+  </div>
+</div>
+
+<script>
+const ITEMS=[
+["Immigration","Undocumented immigrants who have lived here illegally should be deported.","Undocumented immigrants who have lived here for years should be offered a path to citizenship."],
+["Immigration","Border security should be the first priority, even before any other immigration reform.","Immigration reform should address the people already here before border enforcement is expanded."],
+["Immigration","Asylum rules should be tightened to reduce claims.","Asylum rules should be expanded to protect more people fleeing danger."],
+["Immigration","The number of legal immigrants should be reduced.","The number of legal immigrants should be increased."],
+["Immigration","Sanctuary policies that limit local cooperation with federal immigration enforcement should be ended.","Local governments should be able to limit cooperation with federal immigration enforcement."],
+["Immigration","English should be required for citizenship.","Language should not be a barrier to citizenship or voting."],
+["Taxes and spending","Income tax rates should be lowered across the board.","Higher earners should pay a larger share of their income in taxes."],
+["Taxes and spending","The corporate tax rate should be cut to encourage investment.","Corporations should pay higher taxes to fund public services."],
+["Taxes and spending","Estate taxes should be eliminated.","Large estates should be taxed to reduce wealth concentration."],
+["Taxes and spending","Government should cut spending before raising taxes.","Government should raise revenue to fund public needs before cutting programs."],
+["Taxes and spending","The federal deficit should be reduced mainly through spending cuts.","The federal deficit can be addressed through tax increases on high earners."],
+["Taxes and spending","Tax credits for families should be targeted to work and marriage.","Tax credits for families should be expanded to reduce child poverty."],
+["Taxes and spending","A flat tax would be fairer than a progressive tax.","A progressive tax is fairer than a flat tax."],
+["Taxes and spending","Capital gains should be taxed at lower rates to encourage investment.","Capital gains should be taxed at the same rates as wages."],
+["Healthcare","Health care should be provided mainly through private insurance and markets.","Health care should be provided through a government-run system."],
+["Healthcare","Government should not set prices for prescription drugs.","Government should negotiate lower prices for prescription drugs."],
+["Healthcare","Medicaid should be reformed with work requirements and block grants.","Medicaid should be expanded to cover more low-income adults."],
+["Healthcare","Individuals should be free to choose health plans without government mandates.","Everyone should be required to have health insurance."],
+["Healthcare","Medicare should be restructured to reduce federal costs.","Medicare should be protected and expanded."],
+["Healthcare","Mental health care should be left to the private sector and families.","Government should fund mental health care as a public responsibility."],
+["Healthcare","Health care costs are best controlled by competition among providers.","Health care costs are best controlled by government regulation."],
+["Guns and public safety","Gun ownership is a constitutional right that should face few restrictions.","Gun ownership should be regulated to reduce gun violence."],
+["Guns and public safety","Concealed carry should be allowed without a permit.","Concealed carry should require a background check and training."],
+["Guns and public safety","Assault-style weapons should remain legal for civilians.","Assault-style weapons should be banned for civilians."],
+["Guns and public safety","Background checks should be limited to prevent government overreach.","Background checks should be expanded to cover private sales."],
+["Guns and public safety","Police should have more resources to fight crime.","Funding should be shifted from police toward community services."],
+["Guns and public safety","Harsher sentences are needed to deter crime.","Sentencing should focus on rehabilitation and reducing incarceration."],
+["Guns and public safety","Bail reform has made communities less safe.","Cash bail should be eliminated to avoid jailing people who cannot pay."],
+["Abortion and reproductive policy","Abortion should be restricted by law, with limited exceptions.","Abortion should remain legal and available without government restriction."],
+["Abortion and reproductive policy","Life begins at conception, and the law should reflect that.","Decisions about pregnancy should rest with the person who is pregnant."],
+["Abortion and reproductive policy","States should decide abortion policy without federal rules.","Federal law should guarantee access to abortion nationwide."],
+["Abortion and reproductive policy","Public funds should not pay for abortion services.","Public funds should cover abortion services for low-income women."],
+["Abortion and reproductive policy","Parents should be notified when minors seek abortions.","Minors should be able to access reproductive care without parental involvement."],
+["Climate and energy","Fossil fuel production should be expanded to lower energy prices.","Fossil fuel production should be reduced to address climate change."],
+["Climate and energy","Climate regulations impose costs that outweigh the benefits.","Government must act strongly to reduce greenhouse gas emissions."],
+["Climate and energy","Nuclear and natural gas should be prioritized over renewables.","Renewable energy should be prioritized in the power grid."],
+["Climate and energy","Electric vehicle subsidies should be ended.","Electric vehicle subsidies should be expanded."],
+["Climate and energy","Environmental permitting should be streamlined to speed projects.","Environmental reviews should be strengthened before projects are approved."],
+["Climate and energy","Carbon taxes would hurt working families.","A carbon tax is an effective way to cut emissions."],
+["Climate and energy","Climate change is mainly a natural cycle with modest human influence.","Climate change is primarily caused by human activity and requires urgent action."],
+["Trade and economy","Tariffs are an effective tool to protect American workers.","Tariffs raise prices for consumers and should be limited."],
+["Trade and economy","Trade agreements should prioritize American jobs even at higher cost.","Trade agreements should prioritize lower prices and broad economic integration."],
+["Trade and economy","Unions should have fewer legal protections.","Unions should be strengthened to protect workers' bargaining power."],
+["Trade and economy","The minimum wage should be set by states and markets, not federal law.","The federal minimum wage should be raised."],
+["Trade and economy","Regulation of businesses should be reduced to spur growth.","Regulation of businesses is needed to protect consumers and workers."],
+["Trade and economy","Big technology companies should face fewer antitrust actions.","Big technology companies should face stronger antitrust enforcement."],
+["Government role and social programs","Government programs should be smaller and more local.","The federal government should play a larger role in addressing national problems."],
+["Government role and social programs","Social Security should be reformed by changing benefits for future retirees.","Social Security benefits should be protected and expanded."],
+["Government role and social programs","Welfare programs should require work to receive benefits.","Welfare programs should be available to everyone who needs them without work conditions."],
+["Government role and social programs","Federal agencies have too much power over private life.","Federal agencies are needed to enforce protections for citizens."],
+["Government role and social programs","Public employee pensions should be reduced.","Public employees should have secure retirement benefits."],
+["Government role and social programs","Government should not provide housing assistance beyond emergency aid.","Government should expand affordable housing programs."],
+["Government role and social programs","Food assistance programs should be reduced to encourage self-sufficiency.","Food assistance programs should be expanded to reduce hunger."],
+["Education","School choice and vouchers should be expanded.","Public schools should be strengthened rather than funded through vouchers."],
+["Education","Parents should have the right to review and approve school curriculum.","Curriculum decisions should be made by trained educators."],
+["Education","Student loan forgiveness is unfair to those who repaid their loans.","Student loan debt should be forgiven to relieve financial burdens."],
+["Education","Higher education should focus on job training and reduce general requirements.","Higher education should prioritize broad access and liberal arts coursework."],
+["Education","Schools should focus on academic basics before social issues.","Schools should address students' social and emotional needs alongside academics."],
+["Education","Teacher pay should be tied to performance and market conditions.","Teacher pay should be raised and set by collective agreements."],
+["Education","Public universities should face fewer federal requirements.","Public universities should be held to federal standards on access and civil rights."]
+];
+const N=ITEMS.length, $=id=>document.getElementById(id);
+let i=0, resp=Array(N).fill(undefined);
+// Half the items show the R-pole statement, half the L-pole, balanced within each domain and shuffled, to limit acquiescence bias.
+const keyR=(()=>{const out=Array(N); const doms=[...new Set(ITEMS.map(x=>x[0]))]; doms.forEach(d=>{const idx=ITEMS.map((x,k)=>x[0]===d?k:-1).filter(k=>k>=0); const flags=idx.map((_,j)=>j%2===0); for(let a=flags.length-1;a>0;a--){const b=Math.floor(Math.random()*(a+1));[flags[a],flags[b]]=[flags[b],flags[a]];} idx.forEach((k,j)=>out[k]=flags[j]);}); return out;})();
+const LABELS=["Strongly disagree","Disagree","Neutral","Agree","Strongly agree"];
+
+function buildScale(){ $("scale").innerHTML=""; for(let k=0;k<5;k++){const b=document.createElement("button");b.id="s"+k;b.textContent=LABELS[k];b.onclick=()=>set(k);$("scale").appendChild(b);} }
+function toScore(pos){ // pos 0..4 → signed score, +2 = full R, −2 = full L
+  const v=pos-2; return keyR[i]? v : -v; }
+function fromScore(s){ const v=keyR[i]? s : -s; return v+2; }
+function set(k){ resp[i]=toScore(k); render(); }
+function render(){
+  const [d,r,l]=ITEMS[i];
+  $("stmt").textContent=keyR[i]?r:l;
+  $("domlbl").textContent=d; $("count").textContent=(i+1)+" / "+N;
+  const v=resp[i];
+  for(let k=0;k<5;k++) $("s"+k).classList.toggle("on", typeof v==="number" && fromScore(v)===k);
+  $("nop").classList.toggle("on", v===null);
+  $("next").disabled=(v===undefined); $("back").disabled=(i===0);
+  $("next").textContent=(i===N-1)?"Finish":"Next";
+  $("rail").innerHTML=ITEMS.map((_,k)=>`<i class="${k<i?'done':k===i?'cur':''}"></i>`).join("");
+  window.scrollTo({top:0});
+}
+// Where final scores are sent. Leave empty to record nothing. Works with a Google Apps Script web app URL or any endpoint that accepts a JSON POST.
+const SUBMIT_URL="";
+let fname="";
+$("fname").oninput=()=>{ fname=$("fname").value.trim(); $("start").disabled=!fname; };
+$("start").onclick=()=>{ if(!fname) return; $("intro").hidden=true; $("survey").hidden=false; buildScale(); render(); };
+$("nop").onclick=()=>{ resp[i]=null; render(); };
+$("back").onclick=()=>{ if(i>0){i--; render();} };
+$("next").onclick=()=>{ if(i<N-1){i++; render();} else finish(); };
+function mean(a){ const x=a.filter(v=>typeof v==="number"); return x.length? x.reduce((s,v)=>s+v,0)/x.length : null; }
+function pct(s){ return ((s+2)/4*100).toFixed(1)+"%"; }
+function stdev(a){ const x=a.filter(v=>typeof v==="number"); if(x.length<2) return 0; const m=x.reduce((s,v)=>s+v,0)/x.length; return Math.sqrt(x.reduce((s,v)=>s+(v-m)*(v-m),0)/(x.length-1)); }
+function label(s){ const n=Math.round(Math.abs(s)/2*100); if(n<5) return "Center"; return n+(s<0?" L":" R"); }
+function gauge(o,sd){
+  if(o===null) return '<p class="muted">Not enough answers to place you.</p>';
+  const W=360,H=215,cx=180,cy=190,r=150,sw=30;
+  const pt=(s,rr)=>{const t=Math.max(0,Math.min(1,(s+2)/4)); const th=Math.PI*(1-t); return [cx+rr*Math.cos(th), cy-rr*Math.sin(th)];};
+  const arc=(s1,s2,rr)=>{const [x1,y1]=pt(s1,rr),[x2,y2]=pt(s2,rr); return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${rr} ${rr} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`;};
+  const lo=Math.max(-2,o-sd), hi=Math.min(2,o+sd); const [mx,my]=pt(o,r);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:420px;display:block;margin:0 auto" role="img" aria-label="Overall position ${label(o)}">
+  <defs><linearGradient id="lr" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#2b5fd9"/><stop offset=".5" stop-color="#8a3fc9"/><stop offset="1" stop-color="#d9312b"/></linearGradient></defs>
+  <path d="${arc(-2,2,r)}" fill="none" stroke="url(#lr)" stroke-width="${sw}" stroke-linecap="butt"/>
+  <path d="${arc(lo,hi,r)}" fill="none" stroke="var(--fg)" stroke-opacity=".28" stroke-width="${sw}"/>
+  <line x1="${cx}" y1="${cy-r-sw/2-4}" x2="${cx}" y2="${cy-r+sw/2+4}" stroke="var(--fg)" stroke-opacity=".5"/>
+  <circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="11" fill="var(--panel)" stroke="var(--fg)" stroke-width="3"/>
+  <text x="${cx}" y="${cy-40}" text-anchor="middle" font-family="var(--display)" font-size="40" font-weight="600" fill="var(--fg)">${label(o)}</text>
+  <text x="${cx}" y="${cy-12}" text-anchor="middle" font-size="12" fill="var(--muted)">mean ${(o>0?"+":"")+o.toFixed(2)} · spread ±${sd.toFixed(2)}</text>
+  <text x="${cx-r}" y="${cy+18}" text-anchor="middle" font-size="12" fill="var(--muted)">Left</text>
+  <text x="${cx}" y="${cy+18}" text-anchor="middle" font-size="12" fill="var(--muted)">Center</text>
+  <text x="${cx+r}" y="${cy+18}" text-anchor="middle" font-size="12" fill="var(--muted)">Right</text>
+  </svg>`;
+}
+async function finish(){
+  $("survey").hidden=true; $("results").hidden=false;
+  $("rname").textContent=fname+", here is your profile";
+  const doms=[...new Set(ITEMS.map(x=>x[0]))];
+  const domScores={};
+  $("doms").innerHTML=doms.map(d=>{
+    const idx=ITEMS.map((x,k)=>x[0]===d?k:-1).filter(k=>k>=0);
+    const m=mean(idx.map(k=>resp[k])); const n=idx.filter(k=>typeof resp[k]==="number").length;
+    domScores[d]={mean:m===null?null:+m.toFixed(3), answered:n, items:idx.length};
+    return `<div class="dom"><div class="domhead"><span>${d}</span><span class="num muted">${m===null?"no data":(m>0?"+":"")+m.toFixed(2)} · ${n}/${idx.length} answered</span></div><div class="bar"><b style="left:${pct(m??0)};${m===null?'opacity:.25':''}"></b></div></div>`;
+  }).join("");
+  const o=mean(resp); const sd=stdev(resp);
+  $("gauge").innerHTML=gauge(o,sd);
+  const record={first_name:fname, overall:o===null?null:+o.toFixed(3), position:o===null?null:label(o), spread_sd:+sd.toFixed(3), domains:domScores, answered:resp.filter(v=>typeof v==="number").length, submitted_at:new Date().toISOString()};
+  if(SUBMIT_URL){
+    try{
+      await fetch(SUBMIT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(record)});
+      $("savemsg").textContent="Your first name and final scores were recorded. Your item answers were not.";
+    }catch(e){ $("savemsg").textContent="Your scores could not be recorded, but they are shown above."; }
+  }
+  const csv=["item_id,domain,score,statement_pole"].concat(ITEMS.map((x,k)=>`${k+1},"${x[0]}",${resp[k]===null||resp[k]===undefined?"":resp[k]},${keyR[k]?"R":"L"}`)).join("\n");
+  $("csv").textContent=csv;
+}
+$("copy").onclick=()=>{ const t=$("csv").textContent; navigator.clipboard.writeText(t).then(()=>{$("copymsg").textContent="Copied.";}).catch(()=>{$("csv").hidden=false;$("copymsg").textContent="Select and copy the text below.";}); };
+$("restart").onclick=()=>location.reload();
+</script>
+</body>
+</html>
