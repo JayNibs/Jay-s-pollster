@@ -68,7 +68,7 @@ pre{font-size:.75rem;overflow-x:auto;background:var(--bg);padding:12px;border-ra
       <div class="eyebrow">Pilot instrument · 60 items · about 10 minutes</div>
       <h1>Jay’s Political Left - Right - Center</h1>
       <p>You will see 60 statements, one at a time. Say how much you agree with each. There are no right answers, and no party labels. Choose <em>No opinion</em> if you have none.</p>
-      <p class="muted">Your item-by-item answers stay on your device. Only your first name and final scores are recorded.</p>
+      <p class="muted">Your item-by-item answers stay on your device. Only your final scores are recorded, with no name attached.</p>
       <label class="eyebrow" for="fname">First name</label>
       <input id="fname" type="text" autocomplete="given-name" placeholder="e.g. Maria" style="font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);max-width:280px">
       <div class="row"><button class="btn primary" id="start" disabled>Begin</button><span class="muted" id="authmsg"></span></div>
@@ -107,7 +107,7 @@ pre{font-size:.75rem;overflow-x:auto;background:var(--bg);padding:12px;border-ra
     <h2>Measuring positions without party labels</h2>
     <p>Most political surveys ask people which side they are on. This one asks where they stand, one issue at a time, with no statement marked as the party line. The respondent never sees a label, so there is nothing to perform.</p>
     <p>The design borrows from psychometrics rather than polling. Each domain is a short scale, half the statements in it lean one way and half the other, and the order is shuffled so that a habit of agreeing cannot drive the score. The result is a profile across domains rather than a single sorting into two bins.</p>
-    <p>Only final scores and a first name are kept. Item-level answers belong to the respondent and never leave their device unless they choose to copy them.</p>
+    <p>Only final scores are kept, with no name attached. Item-level answers belong to the respondent and never leave their device unless they choose to copy them.</p>
     <p class="muted">Draft placeholder. Replace with the full rationale.</p>
   </div>
 </div>
@@ -242,11 +242,11 @@ async function finish(){
   }).join("");
   const o=mean(resp); const sd=stdev(resp);
   $("gauge").innerHTML=gauge(o,sd);
-  const record={first_name:fname, overall:o===null?null:+o.toFixed(3), position:o===null?null:label(o), spread_sd:+sd.toFixed(3), domains:domScores, answered:resp.filter(v=>typeof v==="number").length, submitted_at:new Date().toISOString()};
+  const record={respondent_id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())), overall:o===null?null:+o.toFixed(3), position:o===null?null:label(o), spread_sd:+sd.toFixed(3), domains:domScores, answered:resp.filter(v=>typeof v==="number").length, submitted_at:new Date().toISOString()};
   if(SUBMIT_URL){
     try{
       await fetch(SUBMIT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(record)});
-      $("savemsg").textContent="Your first name and final scores were recorded. Your item answers were not.";
+      $("savemsg").textContent="Your scores were recorded without your name. Your item answers were not.";
     }catch(e){ $("savemsg").textContent="Your scores could not be recorded, but they are shown above."; }
   }
   const csv=["item_id,domain,score,statement_pole"].concat(ITEMS.map((x,k)=>`${k+1},"${x[0]}",${resp[k]===null||resp[k]===undefined?"":resp[k]},${keyR[k]?"R":"L"}`)).join("\n");
